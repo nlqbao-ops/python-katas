@@ -1,0 +1,18 @@
+# dockerfile for python container 
+
+FROM python:3.11
+
+# Set Python environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements file if it exists
+COPY requirements.txt* ./
+
+# Install dependencies if requirements.txt exists
+RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+CMD ["tail", "-f", "/dev/null"]
