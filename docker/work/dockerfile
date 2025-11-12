@@ -1,0 +1,21 @@
+FROM ubuntu-22:base
+
+WORKDIR /app
+
+RUN export http_proxy=http://proxy-dmz.intel.com:912 && \
+    export https_proxy=http://proxy-dmz.intel.com:912 && \
+    export no_proxy=localhost,127.0.0.0/8,10.0.0.0/8,.intel.com && \
+    export HTTP_PROXY=http://proxy-dmz.intel.com:912 && \
+    export HTTPS_PROXY=http://proxy-dmz.intel.com:912 && \
+    export NO_PROXY=localhost,127.0.0.0/8,10.0.0.0/8,.intel.com
+
+ENV PYTHONUNBUFFERED=1
+
+RUN python3.11 -m pip install -U pip setuptools --proxy=http://proxy-dmz.intel.com:912
+
+
+COPY requirements.txt* /tmp/requirements.txt
+RUN python3.11 -m pip install -U --no-cache-dir -r /tmp/requirements.txt --proxy=http://proxy-dmz.intel.com:912
+
+
+CMD ["tail", "-f", "/dev/null"]
